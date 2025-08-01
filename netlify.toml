@@ -1,0 +1,16 @@
+[build]
+publish = "public"
+command = "echo No build command"
+
+[dev]
+publish = "public"
+
+[[redirects]]
+from = "/api/*"
+to = "/.netlify/functions/:splat"
+status = 200
+
+[functions]
+directory = "./netlify/functions"
+node_bundler = "esbuild"
+external_node_modules = ["@netlify/functions"]

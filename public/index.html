@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="color-scheme" content="light dark" />
+        <title>字体直链 | 免费字体 CDN 加速服务</title>
+        <meta
+            name="description"
+            content="即刻上传您的字体文件（TTF, OTF, WOFF, WOFF2），获取永久免费的 CDN 直链。无需注册，简单快捷，加速您的网站字体加载。"
+        />
+        <meta
+            name="keywords"
+            content="字体, CDN, 免费, 字体托管, 网页字体, webfont, TTF, OTF, WOFF, WOFF2, 字体加速, font hosting, free font cdn"
+        />
+        <script src="https://unpkg.com/@unocss/runtime"></script>
+        <style>
+            #progress-bar {
+                transition: width 0.3s ease-in-out;
+            }
+            body {
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+            }
+        </style>
+    </head>
+    <body class="bg-white dark:bg-gray-950 text-gray-800 dark:text-gray-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <header
+                class="flex justify-between items-center py-5 border-b border-gray-200 dark:border-gray-800"
+            >
+                <div class="flex items-center space-x-3">
+                    <div
+                        class="w-8 h-8 bg-black dark:bg-white rounded-lg"
+                    ></div>
+                    <span class="font-bold text-xl">字体直链</span>
+                </div>
+                <a
+                    href="https://github.com/konghayao/font-now"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-gray-500 hover:text-black dark:hover:text-white"
+                    aria-label="GitHub Repository"
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="28"
+                        height="28"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                    >
+                        <path
+                            d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.91 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+                        />
+                    </svg>
+                </a>
+            </header>
+
+            <main class="py-12 md:py-16 space-y-12">
+                <section class="text-center">
+                    <h1 class="text-4xl md:text-5xl font-bold tracking-tight">
+                        字体文件转 CDN 直链
+                    </h1>
+                    <p
+                        class="mt-4 max-w-2xl mx-auto text-lg text-gray-600 dark:text-gray-400"
+                    >
+                        免费、快速、无需注册。上传字体文件，立即获取用于网页的
+                        CDN 加速链接。
+                    </p>
+                </section>
+
+                <section class="space-y-6">
+                    <div
+                        id="drop-zone"
+                        class="border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-xl p-12 text-center cursor-pointer transition-colors duration-200 hover:border-blue-500 hover:bg-gray-50 dark:hover:bg-gray-900"
+                    >
+                        <input
+                            type="file"
+                            id="font-file"
+                            class="hidden"
+                            accept=".ttf,.otf,.woff,.woff2"
+                        />
+                        <p
+                            id="file-info"
+                            class="text-gray-500 dark:text-gray-400"
+                        >
+                            拖拽字体文件到此处，或
+                            <span class="text-blue-500 font-semibold"
+                                >点击选择</span
+                            >
+                        </p>
+                    </div>
+                    <button
+                        id="upload-btn"
+                        class="w-full bg-black hover:bg-gray-800 dark:bg-white dark:hover:bg-gray-200 text-white dark:text-black font-bold text-lg py-3 px-4 rounded-lg transition-colors duration-200 disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:cursor-not-allowed"
+                        disabled
+                    >
+                        上传并生成链接
+                    </button>
+                </section>
+
+                <div id="status-container" class="space-y-3 hidden">
+                    <div class="flex justify-between items-center">
+                        <span
+                            id="status-text"
+                            class="text-sm font-medium text-gray-600 dark:text-gray-300"
+                        ></span>
+                        <div
+                            id="spinner"
+                            class="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-500"
+                        ></div>
+                    </div>
+                    <div
+                        class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden"
+                    >
+                        <div
+                            id="progress-bar"
+                            class="bg-blue-600 h-2 rounded-full"
+                            style="width: 0%"
+                        ></div>
+                    </div>
+                </div>
+
+                <div id="result" class="mt-6 hidden"></div>
+            </main>
+
+            <footer
+                class="text-center py-6 border-t border-gray-200 dark:border-gray-800 mt-12"
+            >
+                <p class="text-sm text-gray-500 dark:text-gray-400">
+                    © 2024 字体直链. A project by
+                    <a
+                        href="https://github.com/konghayao"
+                        class="text-blue-500 hover:underline"
+                        >KonghaYao</a
+                    >
+                </p>
+            </footer>
+        </div>
+    </body>
+    <script type="module">
+        const baseStorageUrl = "http://127.0.0.1:9000";
+        const fontFile = document.getElementById("font-file");
+        const uploadBtn = document.getElementById("upload-btn");
+        const resultEl = document.getElementById("result");
+        const dropZone = document.getElementById("drop-zone");
+        const fileInfo = document.getElementById("file-info");
+        const statusContainer = document.getElementById("status-container");
+        const statusText = document.getElementById("status-text");
+        const progressBar = document.getElementById("progress-bar");
+        const spinner = document.getElementById("spinner");
+
+        let selectedFile = null;
+
+        dropZone.addEventListener("click", () => fontFile.click());
+
+        fontFile.addEventListener("change", () => {
+            if (fontFile.files.length > 0) {
+                handleFile(fontFile.files[0]);
+            }
+        });
+
+        dropZone.addEventListener("dragover", (e) => {
+            e.preventDefault();
+            dropZone.classList.add(
+                "border-blue-500",
+                "bg-gray-100",
+                "dark:bg-gray-700/50"
+            );
+        });
+
+        dropZone.addEventListener("dragleave", (e) => {
+            e.preventDefault();
+            dropZone.classList.remove(
+                "border-blue-500",
+                "bg-gray-100",
+                "dark:bg-gray-700/50"
+            );
+        });
+
+        dropZone.addEventListener("drop", (e) => {
+            e.preventDefault();
+            dropZone.classList.remove(
+                "border-blue-500",
+                "bg-gray-100",
+                "dark:bg-gray-700/50"
+            );
+            if (e.dataTransfer.files.length > 0) {
+                const file = e.dataTransfer.files[0];
+                if (file.name.match(/\.(ttf|otf|woff|woff2)$/)) {
+                    handleFile(file);
+                } else {
+                    alert("请上传支持的字体格式 (ttf, otf, woff, woff2)");
+                }
+            }
+        });
+
+        function handleFile(file) {
+            if (file) {
+                selectedFile = file;
+                fileInfo.textContent = `已选择文件: ${file.name}`;
+                uploadBtn.disabled = false;
+                dropZone.classList.add("border-green-500");
+                resultEl.classList.add("hidden");
+                statusContainer.classList.add("hidden");
+            }
+        }
+
+        function setProgress(percentage, text) {
+            progressBar.style.width = `${percentage}%`;
+            statusText.textContent = text;
+        }
+
+        function handleFinalError(message) {
+            setProgress(100, `错误: ${message}`);
+            progressBar.classList.remove("bg-blue-600");
+            progressBar.classList.add("bg-red-500");
+            spinner.classList.add("hidden");
+            uploadBtn.disabled = false;
+        }
+
+        uploadBtn.addEventListener("click", async () => {
+            if (!selectedFile) {
+                alert("请先选择一个字体文件");
+                return;
+            }
+
+            uploadBtn.disabled = true;
+            statusContainer.classList.remove("hidden");
+            resultEl.classList.add("hidden");
+            progressBar.classList.remove("bg-red-500");
+            progressBar.classList.add("bg-blue-600");
+            spinner.classList.remove("hidden");
+
+            try {
+                setProgress(10, "正在上传文件...");
+
+                const formData = new FormData();
+                formData.append("font", selectedFile);
+
+                const uploadRes = await fetch("/api/upload", {
+                    method: "POST",
+                    body: formData,
+                });
+
+                if (!uploadRes.ok) {
+                    const errorData = await uploadRes.text();
+                    throw new Error(`上传失败: ${errorData}`);
+                }
+
+                setProgress(50, "上传成功，正在生成链接...");
+
+                const { data } = await uploadRes.json();
+                const fontUrl =
+                    baseStorageUrl +
+                    "/" +
+                    data.storage_bucket +
+                    data.storage_path;
+
+                const splitRes = await fetch("/api/split-background", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ fontUrl }),
+                });
+
+                if (!splitRes.ok) {
+                    throw new Error("提交处理任务失败");
+                }
+
+                setProgress(75, "已提交处理，正在等待结果...");
+
+                const checkStatus = async () => {
+                    try {
+                        const checkRes = await fetch("/api/split-check", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ fontUrl }),
+                        });
+
+                        if (checkRes.ok) {
+                            const res = await checkRes.json();
+                            if (res.status === "processing") {
+                                setProgress(85, "正在处理字体，请稍候...");
+                                setTimeout(checkStatus, 2000);
+                                return;
+                            }
+
+                            if (res.status === "success") {
+                                spinner.classList.add("hidden");
+                                uploadBtn.disabled = false;
+
+                                const finalUrl = `${baseStorageUrl}/${res.data.storage_bucket}${res.data.storage_path}`;
+
+                                try {
+                                    setProgress(95, "正在获取字体详情...");
+                                    const cssContent = await fetch(
+                                        finalUrl
+                                    ).then((res) => {
+                                        if (!res.ok)
+                                            throw new Error("CSS文件下载失败");
+                                        return res.text();
+                                    });
+
+                                    const fontFamilyMatch = cssContent.match(
+                                        /font-family:\s*['"](.+?)['"]/
+                                    );
+                                    const fontName =
+                                        fontFamilyMatch && fontFamilyMatch[1]
+                                            ? fontFamilyMatch[1]
+                                            : selectedFile.name.replace(
+                                                  /\.(ttf|otf|woff|woff2)$/i,
+                                                  ""
+                                              );
+
+                                    setProgress(100, "生成成功！");
+
+                                    const exampleCode = `@import url('${finalUrl}');
+
+body {
+    font-family: '${fontName}', sans-serif;
+}`;
+
+                                    resultEl.innerHTML = `
+                                    <h2 class="text-2xl font-bold mb-4">生成成功！</h2>
+                                    
+                                    <div class="space-y-6">
+                                        <div>
+                                            <p class="font-semibold mb-2">你的字体 CSS 文件 CDN URL:</p>
+                                            <div class="flex items-center text-sm">
+                                                <span class="bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-300 px-3 py-1.5 rounded-l-md font-mono">${baseStorageUrl}</span>
+                                                <span class="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-r-md font-mono flex-1 truncate">/${
+                                                    res.data.storage_bucket
+                                                }${res.data.storage_path}</span>
+                                                <button id="copy-url-btn" class="ml-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-xs font-bold py-1.5 px-3 rounded-md transition-colors">复制</button>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <p class="font-semibold mb-2">使用示例:</p>
+                                            <div class="relative">
+                                                <button id="copy-code-btn" class="absolute top-2 right-2 bg-gray-700 hover:bg-gray-600 text-white text-xs font-bold py-1 px-2 rounded transition-colors">复制</button>
+                                                <div class="p-4 bg-gray-900 dark:bg-black rounded-lg overflow-x-auto">
+                                                    <pre><code class="language-css text-sm text-white">${exampleCode
+                                                        .replace(/</g, "&lt;")
+                                                        .replace(
+                                                            />/g,
+                                                            "&gt;"
+                                                        )}</code></pre>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+                                    resultEl.classList.remove("hidden");
+
+                                    document
+                                        .getElementById("copy-url-btn")
+                                        .addEventListener("click", () => {
+                                            const btn =
+                                                document.getElementById(
+                                                    "copy-url-btn"
+                                                );
+                                            navigator.clipboard
+                                                .writeText(finalUrl)
+                                                .then(() => {
+                                                    const originalText = "复制";
+                                                    btn.textContent = "已复制!";
+                                                    setTimeout(() => {
+                                                        btn.textContent =
+                                                            originalText;
+                                                    }, 2000);
+                                                });
+                                        });
+
+                                    document
+                                        .getElementById("copy-code-btn")
+                                        .addEventListener("click", () => {
+                                            const btn =
+                                                document.getElementById(
+                                                    "copy-code-btn"
+                                                );
+                                            navigator.clipboard
+                                                .writeText(exampleCode)
+                                                .then(() => {
+                                                    const originalText = "复制";
+                                                    btn.textContent = "已复制!";
+                                                    setTimeout(() => {
+                                                        btn.textContent =
+                                                            originalText;
+                                                    }, 2000);
+                                                });
+                                        });
+                                } catch (e) {
+                                    handleFinalError(
+                                        `处理结果失败: ${e.message}`
+                                    );
+                                }
+                            } else if (res.status === "error") {
+                                handleFinalError(res.message || "处理过程出错");
+                            }
+                        } else {
+                            if (checkRes.status >= 500) {
+                                statusText.textContent =
+                                    "服务器检查状态出错，将继续重试...";
+                                setTimeout(checkStatus, 2000);
+                            } else {
+                                handleFinalError("检查处理状态失败");
+                            }
+                        }
+                    } catch (e) {
+                        handleFinalError("轮询出错: " + e.message);
+                    }
+                };
+
+                checkStatus();
+            } catch (error) {
+                handleFinalError(error.message);
+            }
+        });
+    </script>
+</html>

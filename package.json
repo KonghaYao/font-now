@@ -1,0 +1,29 @@
+{
+    "private": true,
+    "scripts": {
+        "install-deps": "cn-font-split i default",
+        "dev": "netlify dev"
+    },
+    "devDependencies": {
+        "netlify-cli": "^22.3.0"
+    },
+    "pnpm": {
+        "onlyBuiltDependencies": [
+            "@parcel/watcher",
+            "cn-font-split",
+            "esbuild",
+            "koffi",
+            "netlify-cli",
+            "protobufjs",
+            "sharp",
+            "unix-dgram"
+        ]
+    },
+    "dependencies": {
+        "@aws-sdk/client-s3": "^3.858.0",
+        "@netlify/blobs": "^10.0.8",
+        "@netlify/functions": "^4.2.1",
+        "cn-font-split": "^7.2.9",
+        "uuid": "^11.1.0"
+    }
+}

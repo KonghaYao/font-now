@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+    rustfs:
+        image: rustfs/rustfs:latest
+        container_name: rustfs_local
+        ports:
+            - "9000:9000"
+            - "7001:7001" # RustFS 控制台端口
+        volumes:
+            - ./.docker/rustfs_data:/data # 持久化数据卷
+        environment:
+            RUSTFS_ACCESS_KEY: rustfsadmin
+            RUSTFS_SECRET_KEY: rustfsadmin
+            RUSTFS_CONSOLE_ENABLE: "true"
+        # command: --console-enable /data
+
+volumes:
+    rustfs_data: # 定义一个命名卷用于数据持久化

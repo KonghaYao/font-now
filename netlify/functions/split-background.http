@@ -1,0 +1,19 @@
+POST http://localhost:8888/api/split-background
+Content-Type: application/json
+
+{
+    "fontUrl": "https://github.dpik.top/https://github.com/KonghaYao/cn-font-split/blob/release/packages/demo/public/SmileySans-Oblique.ttf",
+    "forceUpdate": true
+}
+
+
+###
+
+POST http://localhost:8888/api/split-check
+Content-Type: application/json
+
+{
+    "fontUrl": "https://github.dpik.top/https://github.com/KonghaYao/cn-font-split/blob/release/packages/demo/public/SmileySans-Oblique.ttf"
+}
+
+
