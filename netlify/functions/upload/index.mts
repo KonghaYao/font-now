@@ -26,16 +26,18 @@ export default async (req: Request, context: Context) => {
     )}.${fileExtension}`;
 
     await storage.upload(
-        "font-now",
+        process.env.S3_BUCKET_NAME,
         "origin-font/" + s3Key,
         new Uint8Array(fileBuffer)
     );
+    const storage_path = "/origin-font/" + s3Key;
     return new Response(
         JSON.stringify({
             code: "0",
             data: {
-                storage_bucket: "font-now",
-                storage_path: "/origin-font/" + s3Key,
+                storage_bucket: process.env.S3_BUCKET_NAME,
+                storage_path,
+                public_url: `https://${process.env.S3_PUBLIC_ENDPOINT}${storage_path}`,
             },
         })
     );

@@ -52,7 +52,7 @@ export default async (req: Request, context: Context) => {
                         ? new TextEncoder().encode(data)
                         : data;
                 await storage.upload(
-                    "font-now",
+                    process.env.S3_BUCKET_NAME,
                     "font/" + id + "/" + name,
                     content
                 );
@@ -62,7 +62,7 @@ export default async (req: Request, context: Context) => {
         const result = {
             code: "0",
             data: {
-                storage_bucket: "font-now",
+                storage_bucket: process.env.S3_BUCKET_NAME,
                 storage_path: "/font/" + id + "/result.css",
             },
             status: "success",

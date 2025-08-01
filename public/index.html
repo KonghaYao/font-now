@@ -13,6 +13,10 @@
             name="keywords"
             content="字体, CDN, 免费, 字体托管, 网页字体, webfont, TTF, OTF, WOFF, WOFF2, 字体加速, font hosting, free font cdn"
         />
+        <link
+            rel="stylesheet"
+            href="https://ik.imagekit.io/fontnow//font/0d96c908-4906-538c-94dc-b4c9729180e3/result.css"
+        />
         <script src="https://unpkg.com/@unocss/runtime"></script>
         <style>
             #progress-bar {
@@ -21,6 +25,9 @@
             body {
                 -webkit-font-smoothing: antialiased;
                 -moz-osx-font-smoothing: grayscale;
+            }
+            body {
+                font-family: "BWCKKT";
             }
         </style>
     </head>
@@ -139,7 +146,11 @@
         </div>
     </body>
     <script type="module">
-        const baseStorageUrl = "http://127.0.0.1:9000";
+        // config 需要从配置中获取
+        const config = await fetch("/api/index").then((res) => res.json());
+        const CDN_URL = config.data.CDN_URL;
+        const baseStorageUrl = config.data.baseStorageUrl;
+
         const fontFile = document.getElementById("font-file");
         const uploadBtn = document.getElementById("upload-btn");
         const resultEl = document.getElementById("result");
@@ -251,11 +262,7 @@
                 setProgress(50, "上传成功，正在生成链接...");
 
                 const { data } = await uploadRes.json();
-                const fontUrl =
-                    baseStorageUrl +
-                    "/" +
-                    data.storage_bucket +
-                    data.storage_path;
+                const fontUrl = baseStorageUrl + "/" + data.storage_path;
 
                 const splitRes = await fetch("/api/split-background", {
                     method: "POST",
@@ -289,7 +296,7 @@
                                 spinner.classList.add("hidden");
                                 uploadBtn.disabled = false;
 
-                                const finalUrl = `${baseStorageUrl}/${res.data.storage_bucket}${res.data.storage_path}`;
+                                const finalUrl = `${CDN_URL}${res.data.storage_path}`;
 
                                 try {
                                     setProgress(95, "正在获取字体详情...");
@@ -327,7 +334,7 @@ body {
                                         <div>
                                             <p class="font-semibold mb-2">你的字体 CSS 文件 CDN URL:</p>
                                             <div class="flex items-center text-sm">
-                                                <span class="bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-300 px-3 py-1.5 rounded-l-md font-mono">${baseStorageUrl}</span>
+                                                <span class="bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-300 px-3 py-1.5 rounded-l-md font-mono">${CDN_URL}</span>
                                                 <span class="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-r-md font-mono flex-1 truncate">/${
                                                     res.data.storage_bucket
                                                 }${res.data.storage_path}</span>

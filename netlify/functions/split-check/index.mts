@@ -20,6 +20,7 @@ export default async (req: Request) => {
         const result = {
             code: "-1",
             data: "任务未完成或不存在",
+            status: "processing",
         };
         return new Response(JSON.stringify(result), {
             headers: { "Content-Type": "application/json" },
