@@ -239,13 +239,13 @@
             try {
                 setProgress(10, "正在上传文件...");
 
-                const formData = new FormData();
-                formData.append("font", selectedFile);
-
-                const uploadRes = await fetch("/api/upload", {
-                    method: "POST",
-                    body: formData,
-                });
+                const uploadRes = await fetch(
+                    "/api/upload?filename=" + selectedFile.name,
+                    {
+                        method: "POST",
+                        body: selectedFile,
+                    }
+                );
 
                 if (!uploadRes.ok) {
                     const errorData = await uploadRes.text();

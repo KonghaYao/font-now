@@ -13,14 +13,9 @@ const sha256 = async (data: Uint8Array) => {
 };
 
 export default async (req: Request, context: Context) => {
-    const formData = await req.formData();
-    const file = formData.get("font") as File;
-
-    if (!file) {
-        return new Response("No font file uploaded", { status: 400 });
-    }
-    const fileBuffer = await file.arrayBuffer();
-    const fileExtension = file.name.split(".").pop();
+    const filename = new URL(req.url).searchParams.get("filename");
+    const fileBuffer = await req.arrayBuffer();
+    const fileExtension = filename?.split(".").pop();
     const s3Key = `${await sha256(
         new Uint8Array(fileBuffer)
     )}.${fileExtension}`;
