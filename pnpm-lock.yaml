@@ -14,6 +14,9 @@ importers:
       '@netlify/blobs':
         specifier: ^10.0.8
         version: 10.0.8
+      '@netlify/edge-functions':
+        specifier: ^2.16.3
+        version: 2.16.3
       '@netlify/functions':
         specifier: ^4.2.1
         version: 4.2.1(rollup@4.46.2)
@@ -663,6 +666,10 @@ packages:
 
   '@netlify/edge-functions@2.16.2':
     resolution: {integrity: sha512-vpNT/VrfvymLx9MH46cuvTfPfEVZtpkwdM5atApzWLUrbyA0pgooAx2H0jupJk+u8yTfEYZCMvtsENEZO82agw==}
+    engines: {node: '>=18.0.0'}
+
+  '@netlify/edge-functions@2.16.3':
+    resolution: {integrity: sha512-0sHOhS0Su6+JkU21hNXqZSX0E0BW0i7uTTSYKtNCYem6LnJJ5XO8luVLCtK+uMPbbhcYlFVm552tMwPOSRuIaw==}
     engines: {node: '>=18.0.0'}
 
   '@netlify/functions-utils@6.2.0':
@@ -5476,6 +5483,15 @@ snapshots:
   '@netlify/edge-functions@2.16.2':
     dependencies:
       '@netlify/dev-utils': 4.1.0
+      '@netlify/edge-bundler': 14.2.2
+      '@netlify/edge-functions-bootstrap': 2.14.0
+      '@netlify/runtime-utils': 2.1.0
+      '@netlify/types': 2.0.2
+      get-port: 7.1.0
+
+  '@netlify/edge-functions@2.16.3':
+    dependencies:
+      '@netlify/dev-utils': 4.1.1
       '@netlify/edge-bundler': 14.2.2
       '@netlify/edge-functions-bootstrap': 2.14.0
       '@netlify/runtime-utils': 2.1.0

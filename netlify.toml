@@ -10,7 +10,13 @@ from = "/api/*"
 to = "/.netlify/functions/:splat"
 status = 200
 
+
 [functions]
 directory = "./netlify/functions"
 node_bundler = "esbuild"
 external_node_modules = ["@netlify/functions"]
+
+
+[[edge_functions]]
+function = "upload"
+path = "/api-edge/upload"
