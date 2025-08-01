@@ -1,10 +1,11 @@
-# 中文字体处理项目
+# Font Now（免费公益字体 CDN）
 
-这是一个基于 Nitro 和 Netlify Functions 的项目，专注于中文字体的分割和处理。它能够接收字体文件 URL，在后台进行字体分割，并将结果存储到 S3 兼容的对象存储中，同时提供状态查询接口供前端进行轮询。
+[在线网站](https://font-now.netlify.app/)：上传你的字体到我们的 CDN 中，直接通过链接获取
+
+这是一个基于 Netlify Functions 的公益项目，与 `cn-font-split` 及中文网字计划同属一个组织，专注于中文字体的分割和处理，并提供字体 CDN 服务。它能够接收字体文件 URL，在后台进行字体分割，并将结果存储到 S3 兼容的对象存储中，同时提供状态查询接口供前端进行轮询。
 
 ## 技术栈
 
--   **框架**: Nitro
 -   **函数**: Netlify Functions (用于后台任务处理和状态查询)
 -   **数据存储**: Netlify Blobs (用于存储任务状态和结果)
 -   **对象存储**: S3 兼容存储 (用于存储分割后的字体文件)
@@ -28,11 +29,12 @@ S3_REGION="你的 S3 区域，例如 oss-cn-shenzhen"
 S3_ENDPOINT="你的 S3 端点 URL，例如 https://s3.oss-cn-shenzhen.aliyuncs.com"
 S3_BUCKET_NAME="你的 S3 存储桶名称，例如 chinese-fonts"
 S3_PUBLIC_ENDPOINT="你的 S3 存储桶公共访问点 URL，例如 https://chinese-fonts.oss-cn-shenzhen.aliyuncs.com"
-CDN_URL="你的 CDN URL，用于访问处理后的字体文件，例如 https://ik.imagekit.io/fontnow"
+CDN_URL="你的 CDN URL，用于访问处理后的字体文件，没有可不填，例如 https://ik.imagekit.io/fontnow"
 ```
 
--   `/font` (public): 在 S3 中用于存储分割后的字体文件和相关的 CSS/JSON 结果。
--   `/origin-font` (public): 在 S3 中用于存储原始上传的字体文件 (如果适用)。
+-   my-bucket (public)
+    -   `/font` : 在 S3 中用于存储分割后的字体文件和相关的 CSS/JSON 结果。
+    -   `/origin-font`: 在 S3 中用于存储原始上传的字体文件 (如果适用)。
 
 ## 安装与运行
 
