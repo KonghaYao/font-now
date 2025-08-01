@@ -238,12 +238,13 @@
 
             try {
                 setProgress(10, "正在上传文件...");
-
+                const fd = new FormData();
+                fd.append("file", selectedFile);
                 const uploadRes = await fetch(
-                    "/api/upload?filename=" + selectedFile.name,
+                    "https://tmpfiles.org/api/v1/upload",
                     {
                         method: "POST",
-                        body: selectedFile,
+                        body: fd,
                     }
                 );
 
@@ -255,7 +256,10 @@
                 setProgress(50, "上传成功，正在生成链接...");
 
                 const { data } = await uploadRes.json();
-                const fontUrl = baseStorageUrl + "/" + data.storage_path;
+                const fontUrl = data.url.replace(
+                    "tmpfiles.org",
+                    "tmpfiles.org/dl"
+                );
 
                 const splitRes = await fetch("/api/split-background", {
                     method: "POST",
@@ -321,36 +325,42 @@ body {
 }`;
 
                                     resultEl.innerHTML = `
-                                    <h2 class="text-2xl font-bold mb-4">生成成功！</h2>
-                                    
-                                    <div class="space-y-6">
-                                        <div>
-                                            <p class="font-semibold mb-2">你的字体 CSS 文件 CDN URL:</p>
-                                            <div class="flex items-center text-sm">
-                                                <span class="bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-300 px-3 py-1.5 rounded-l-md font-mono">${CDN_URL}</span>
-                                                <span class="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-r-md font-mono flex-1 truncate">/${
-                                                    res.data.storage_bucket
-                                                }${res.data.storage_path}</span>
-                                                <button id="copy-url-btn" class="ml-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-xs font-bold py-1.5 px-3 rounded-md transition-colors">复制</button>
-                                            </div>
-                                        </div>
+                                            <h2 class="text-2xl font-bold mb-4">生成成功！</h2>
 
-                                        <div>
-                                            <p class="font-semibold mb-2">使用示例:</p>
-                                            <div class="relative">
-                                                <button id="copy-code-btn" class="absolute top-2 right-2 bg-gray-700 hover:bg-gray-600 text-white text-xs font-bold py-1 px-2 rounded transition-colors">复制</button>
-                                                <div class="p-4 bg-gray-900 dark:bg-black rounded-lg overflow-x-auto">
-                                                    <pre><code class="language-css text-sm text-white">${exampleCode
-                                                        .replace(/</g, "&lt;")
-                                                        .replace(
-                                                            />/g,
-                                                            "&gt;"
-                                                        )}</code></pre>
+                                            <div class="space-y-6">
+                                                <div>
+                                                    <p class="font-semibold mb-2">你的字体 CSS 文件 CDN URL:</p>
+                                                    <div class="flex items-center text-sm">
+                                                        <span class="bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-300 px-3 py-1.5 rounded-l-md font-mono">${CDN_URL}</span>
+                                                        <span class="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-r-md font-mono flex-1 truncate">/${
+                                                            res.data
+                                                                .storage_bucket
+                                                        }${
+                                        res.data.storage_path
+                                    }</span>
+                                                        <button id="copy-url-btn" class="ml-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-xs font-bold py-1.5 px-3 rounded-md transition-colors">复制</button>
+                                                    </div>
+                                                </div>
+
+                                                <div>
+                                                    <p class="font-semibold mb-2">使用示例:</p>
+                                                    <div class="relative">
+                                                        <button id="copy-code-btn" class="absolute top-2 right-2 bg-gray-700 hover:bg-gray-600 text-white text-xs font-bold py-1 px-2 rounded transition-colors">复制</button>
+                                                        <div class="p-4 bg-gray-900 dark:bg-black rounded-lg overflow-x-auto">
+                                                            <pre><code class="language-css text-sm text-white">${exampleCode
+                                                                .replace(
+                                                                    /</g,
+                                                                    "&lt;"
+                                                                )
+                                                                .replace(
+                                                                    />/g,
+                                                                    "&gt;"
+                                                                )}</code></pre>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                `;
+                                        `;
                                     resultEl.classList.remove("hidden");
 
                                     document
