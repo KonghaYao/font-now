@@ -240,7 +240,7 @@
                 setProgress(10, "正在上传文件...");
 
                 const uploadRes = await fetch(
-                    "/api-edge/upload?filename=" + selectedFile.name,
+                    "/api/upload?filename=" + selectedFile.name,
                     {
                         method: "POST",
                         body: selectedFile,
